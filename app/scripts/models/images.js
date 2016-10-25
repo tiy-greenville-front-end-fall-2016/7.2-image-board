@@ -5,7 +5,8 @@ var Image = Backbone.Model.extend({
   defaults: {
     imageUrl: '',
     caption: ''
-  }
+  },
+  idAttribute: '_id'
 });
 
 var ImageCollection = Backbone.Collection.extend({
