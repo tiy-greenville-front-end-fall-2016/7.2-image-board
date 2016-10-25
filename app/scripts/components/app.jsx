@@ -12,14 +12,13 @@ var AppComponent = React.createClass({
   getInitialState: function(){
     var self = this;
     var imageBoard = new ImageCollection();
-    var imageModel = new Image();
 
     imageBoard.fetch().then(function(){
       self.setState({collection: imageBoard});
     });
 
     return {
-      imageToEdit: imageModel,
+      imageToEdit: false,
       collection: imageBoard,
       showForm: false
     };
@@ -29,14 +28,20 @@ var AppComponent = React.createClass({
     this.setState({collection: this.state.collection});
     // this.forceUpdate();
   },
+  handleEdit: function(model){
+    this.setState({showForm: true, imageToEdit: model});
+  },
   handleToggleForm: function(e){
     e.preventDefault();
 
     var showForm = !this.state.showForm;
     this.setState({showForm: showForm});
   },
-  editImage: function(image){
-    this.setState({imageToEdit: image});
+  editImage: function(model, data){
+    model.set(data);
+    model.save();
+
+    this.setState({imageToEdit: false, showForm: false});
   },
   render: function(){
     var self = this;
@@ -46,7 +51,7 @@ var AppComponent = React.createClass({
         <ListingComponent
           key={image.get("_id")}
           model={image}
-          editImage={self.editImage}
+          handleEdit={self.handleEdit}
         />
       );
     });
@@ -60,7 +65,7 @@ var AppComponent = React.createClass({
         <div className="container">
           <div className="row">
             <div className="col-md-12">
-              {this.state.showForm ? <FormComponent model={this.state.imageToEdit} addImage={this.addImage}/> : null}
+              {this.state.showForm ? <FormComponent model={this.state.imageToEdit} addImage={this.addImage} editImage={this.editImage}/> : null}
             </div>
           </div>
 

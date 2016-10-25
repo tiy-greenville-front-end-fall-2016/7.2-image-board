@@ -3,7 +3,7 @@ var React = require('react');
 
 var ListingComponent = React.createClass({
   handleEdit: function(e){
-    this.props.editImage(this.props.model);
+    this.props.handleEdit(this.props.model);
   },
   render: function(){
     var imageSrc = this.props.model.get('url');
